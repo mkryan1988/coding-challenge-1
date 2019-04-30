@@ -50,33 +50,35 @@ export default {
       }
     },
     rotateLeft (newPos) { 
-      var oldDirection = newPos[newPos.length -1];
+      var newPosStripped = newPos.replace(/\s+/g, '');
+      var oldDirection = newPosStripped.charAt(2);
       var newdirection = ''
       if (oldDirection === 'N') {
-        newdirection = 'W'
+        newDirection = 'W'
       } else if (oldDirection === 'E') {
-        newdirection = 'N'
+        newDirection = 'N'
       } else if (oldDirection === 'S') {
-        newdirection = 'E'
+        newDirection = 'E'
       } else if (oldDirection === 'W') {
-        newdirection = 'S'
+        newDirection = 'S'
       }
-      return newPos.replace(/.$/, newdirection)
+      return newPos.replace(/.$/, newDirection)
     },
     rotateRight (newPos) {
-      var oldDirection = newPos[newPos.length -1];
-      var newdirection = ''
+      var newPosStripped = newPos.replace(/\s+/g, '');
+      var oldDirection = newPosStripped.charAt(2);
+      var newDirection = ''
       if (oldDirection === 'N') {
-        newdirection = 'E'
+        newDirection = 'E'
       } else if (oldDirection === 'E') {
-        newdirection = 'S'
+        newDirection = 'S'
       } else if (oldDirection === 'S') {
-        newdirection = 'W'
+        newDirection = 'W'
       } else if (oldDirection === 'W') {
-        newdirection = 'N'
+        newDirection = 'N'
       }
-      this.route.push(newPos.replace(/.$/, newdirection))
-      return newPos.replace(/.$/, newdirection)
+      this.route.push(newPos.replace(/.$/, newDirection))
+      return newPos.replace(/.$/, newDirection)
     },
     moveForward (newPos) {
       var newPosStripped = newPos.replace(/\s+/g, '');
