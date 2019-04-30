@@ -11,9 +11,10 @@ export default {
     return {
       ships: [
         [ '1 1 E', 'RFRFRFRF']
-        // [ '3 2 N', 'FRRFLLFFRRFLL'],
+        // [ '3 2 N', 'FRRFLLFFRRFLL']
         // [ '0 3 W', 'LLFFFLFLFL']
       ],
+      route: [],
       gridNE: '5 3',
       output: [],
     }
@@ -32,23 +33,21 @@ export default {
       const startingPos = ship[0]
       const instructions = ship[1]
       var newPos = startingPos
-      console.log('pos:' + startingPos)
       for (let inst of instructions) {
         if (inst === 'L') {
           setTimeout(function() {
             newPos = self.rotateLeft(newPos)
-          },500);
+          },1000);
         } else if (inst === 'R') {
-            setTimeout(function() {
-              newPos = self.rotateRight(newPos)
-            },500);
+          setTimeout(function() {
+            newPos = self.rotateRight(newPos)
+          },1000);
         } else if (inst === 'F') {
           setTimeout(function() {
             newPos = self.moveForward(newPos)
-          },500);
+          },1000);
         }
       }
-      console.log('pos:' + newPos)
     },
     rotateLeft (newPos) { 
       var oldDirection = newPos[newPos.length -1];
@@ -76,21 +75,35 @@ export default {
       } else if (oldDirection === 'W') {
         newdirection = 'N'
       }
+      this.route.push(newPos.replace(/.$/, newdirection))
       return newPos.replace(/.$/, newdirection)
     },
     moveForward (newPos) {
-      // if is past grid coordinates
-      if (condition) {
-        
-      } else {
-        return 
+      var newPosStripped = newPos.replace(/\s+/g, '');
+      var newX = Math.trunc(newPosStripped.charAt(0))
+      var newY = Math.trunc(newPosStripped.charAt(1))
+      var oldDirection = newPosStripped[newPosStripped.length -1];
+      var coOrdinates = ''
+      if (oldDirection === 'N') {
+        newY = newY + 1
+      } else if (oldDirection === 'E') {
+        newX = newX + 1
+      } else if (oldDirection === 'S') {
+        newY = newY - 1
+      } else if (oldDirection === 'W') {
+        newX = newX - 1
       }
-      return newPos.replace(/.$/, newdirection)
-    }
-  },
-  computed: {
-    ifLost () {
-      return 'LOST'
+      // if past grid coordinates
+      var maxX = Math.trunc(this.gridNE[0])
+      var maxY = Math.trunc(this.gridNE[this.gridNE.length -1]) 
+      if ((newX >= 0 && newX <= maxX) || (newY > 0 && newY <= maxY)) {
+        // console.log(newX + ' ' + newY + ' ' + oldDirection);
+        this.route.push(newX + ' ' + newY + ' ' + oldDirection)
+        return newX + ' ' + newY + ' ' + oldDirection
+      } else {
+        this.route.push(newPos + 'LOST')
+        return newPos + 'LOST'
+      }
     }
   }
 }
