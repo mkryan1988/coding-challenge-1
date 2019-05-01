@@ -55,5 +55,5 @@ LLFFFLFLFL
 
 ## Completed: Steps to run
 Clone fork\
-npm install
+npm install\
 npm run serve
