@@ -52,3 +52,7 @@ LLFFFLFLFL
 
 ## Finally
 **Tell us when you have completed the challenge**
+
+## Completed: Steps to run
+**Clone fork**
+**npm run serve**
