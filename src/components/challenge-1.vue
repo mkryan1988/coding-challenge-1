@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <button class="btn" :class="{'disabled' : loading || currentShip > 2}" @click="routeShip">Route Ship</button>
+    <button class="btn" :class="{'disabled' : loading || currentShip > 2}" @click="routeShip">Route Ships</button>
     <h4>Ships:</h4>
     <ol>
       <li v-for="(ship, index) in ships" :key="'ship-'+ index" >{{ship}}</li>
@@ -33,6 +33,11 @@ export default {
       loading: false,
       warnings: [],
       currentShip: 0
+    }
+  },
+  watch: {
+    currentShip () {
+      this.routeShip()
     }
   },
   methods: {
@@ -94,7 +99,6 @@ export default {
       return newPos.replace(/.$/, newDirection)
     },
     rotateRight (newPos) {
-      console.log(newPos)
       var newPosStripped = newPos.replace(/\s+/g, '');
       var oldDirection = newPosStripped.charAt(2);
       var newDirection = ''
@@ -125,13 +129,13 @@ export default {
       } else if (currentDirection === 'W') {
         newX = newX - 1
       }
-
       // Check if nextStep is off grid (inner: checks previous warning) 
       var maxX = Math.trunc(this.gridNE[0])
       var maxY = Math.trunc(this.gridNE[this.gridNE.length -1]) 
+      // If movement if off grid
       if (newX < 0 || newX > maxX || newY < 0 || newY > maxY) {
+        // If var newPos is in warnings array push previous position to route 
         if (this.warnings.includes(newPos)) {
-           alert('warning')
            this.route.push(newPos)
            return newPos
         } else {
@@ -140,7 +144,6 @@ export default {
           return false
         }
       } else {
-        // console.log(newX + ' ' + newY + ' ' + currentDirection);
         this.route.push(newX + ' ' + newY + ' ' + currentDirection)
         return newX + ' ' + newY + ' ' + currentDirection
       }
@@ -149,7 +152,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 h3 {
   margin: 40px 0 0;
