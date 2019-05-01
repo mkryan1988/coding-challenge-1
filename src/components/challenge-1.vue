@@ -35,9 +35,6 @@ export default {
       currentShip: 0
     }
   },
-  mounted () {
-    // this.locateShips()
-  },
   methods: {
     clearRouting () {
       var lastRoute = this.route[this.route.length - 1]
@@ -128,18 +125,24 @@ export default {
       } else if (currentDirection === 'W') {
         newX = newX - 1
       }
-      // if past grid coordinates
+
+      // Check if nextStep is off grid (inner: checks previous warning) 
       var maxX = Math.trunc(this.gridNE[0])
       var maxY = Math.trunc(this.gridNE[this.gridNE.length -1]) 
       if (newX < 0 || newX > maxX || newY < 0 || newY > maxY) {
-        this.route.push(newPos + ' LOST')
-        this.warnings.push(newPos)
-        return false
+        if (this.warnings.includes(newPos)) {
+           alert('warning')
+           this.route.push(newPos)
+           return newPos
+        } else {
+          this.route.push(newPos + ' LOST')
+          this.warnings.push(newPos)
+          return false
+        }
       } else {
         // console.log(newX + ' ' + newY + ' ' + currentDirection);
         this.route.push(newX + ' ' + newY + ' ' + currentDirection)
         return newX + ' ' + newY + ' ' + currentDirection
-        
       }
     }
   }
